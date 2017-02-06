@@ -14,11 +14,22 @@ function set_git_branch() {
   fi
 }
 
+function git_dirty() {
+  expr `git status --porcelain 2>/dev/null| wc -l`
+}
+
 function set_git_prompt() {
   set_git_branch
 
   if test ${GIT_BRANCH}; then
-    GIT_PROMPT=" ${EMB}git:(${EMR}${GIT_BRANCH}${EMB})${RESET}"
+    local git_dirty_prompt;
+    if [[ `git_dirty` -eq 0 ]]; then
+      git_dirty_prompt=""
+    else
+      git_dirty_prompt=" ${EMY}✗${RESET}"
+    fi
+
+    GIT_PROMPT=" ${EMB}git:(${EMR}${GIT_BRANCH}${git_dirty_prompt}${EMB})${RESET}"
   else
     unset GIT_PROMPT
   fi
