@@ -29,7 +29,7 @@ function set_git_prompt() {
       git_dirty_prompt=" ${EMY}✗${RESET}"
     fi
 
-    GIT_PROMPT=" ${EMB}git:(${EMR}${GIT_BRANCH}${git_dirty_prompt}${EMB})${RESET}"
+    GIT_PROMPT=" ${EMB}git:(${EMR}${GIT_BRANCH}${EMB})${git_dirty_prompt}${RESET}"
   else
     unset GIT_PROMPT
   fi
