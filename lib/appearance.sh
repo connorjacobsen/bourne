@@ -50,3 +50,7 @@ function update_prompt() {
 }
 
 PROMPT_COMMAND=update_prompt
+
+# Set directory colors
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
