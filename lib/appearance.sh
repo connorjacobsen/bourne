@@ -25,7 +25,7 @@ function git_dirty() {
 function set_git_prompt() {
   git_status="$(git status 2> /dev/null)"
 
-  if [[ ${git_status} =~ "working directory clean" ]]; then
+  if [[ ${git_status} =~ "working tree clean" ]]; then
     state="${EMG}"
   elif [[ ${git_status} =~ "Changes to be committed" ]]; then
     state="${EMY}"
@@ -34,16 +34,12 @@ function set_git_prompt() {
   fi
 
   # Set arrow icon based on status against remote
-  remote_pattern="# Your branch is (.*) of"
-  if [[ ${git_status} =~ ${remote_pattern} ]]; then
-    if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
-      remote="↑"
-    else
-      remote="↓"
-    fi
-  fi
-  diverge_pattern="# Your branch and (.*) have diverged"
-  if [[ ${git_status} =~ ${diverge_pattern} ]]; then
+  remote=""
+  if [[ ${git_status} =~ "Your branch is ahead of" ]]; then
+    remote="↑"
+  elif [[ ${git_status} =~ "Your branch is behind" ]]; then
+    remote="↓"
+  elif [[ ${git_status} =~ "have diverged" ]]; then
     remote="↕"
   fi
 
@@ -53,7 +49,7 @@ function set_git_prompt() {
 
   if test ${BRANCH}; then
     # set the final branch string
-    BRANCH="${state}(${branch})${remote}${RESET}"
+    BRANCH="${state}git:(${branch}${remote})${RESET}"
     local git_dirty_prompt;
     if [[ `git_dirty` -eq 0 ]]; then
       git_dirty_prompt=""
@@ -61,7 +57,7 @@ function set_git_prompt() {
       git_dirty_prompt=" ${EMY}✗${RESET}"
     fi
 
-    BRANCH=" ${EMB}git:${BRANCH}${git_dirty_prompt}${RESET}"
+    BRANCH=" ${BRANCH}${git_dirty_prompt}${RESET}"
   else
     unset BRANCH
   fi
