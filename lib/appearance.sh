@@ -38,6 +38,7 @@ function set_git_prompt() {
 function update_prompt() {
   local EXIT="$?" # this has to be first
   set_git_prompt
+  set_virtualenv
 
   if [ $EXIT -eq 0 ]
   then
@@ -46,7 +47,7 @@ function update_prompt() {
     ret_status="${EMR}λ ${RESET}"
   fi
 
-  PS1="${ret_status}${EMC}\w${RESET}${GIT_PROMPT} ${RESET}"
+  PS1="${ret_status}${PYTHON_VIRTUAL_ENV}${EMC}\w${RESET}${GIT_PROMPT} ${RESET}"
 }
 
 PROMPT_COMMAND=update_prompt
