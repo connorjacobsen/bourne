@@ -65,7 +65,7 @@ function set_git_prompt() {
 
 function update_prompt() {
   local EXIT="$?" # this has to be first
-  set_virtualenv
+  set_venv_mod_prompt_modifier
 
   if [ $EXIT -eq 0 ]
   then
@@ -80,7 +80,7 @@ function update_prompt() {
     BRANCH=""
   fi
 
-  PS1="${ret_status}${PYTHON_VIRTUAL_ENV}${EMC}\w${RESET}${BRANCH} "
+  PS1="${ret_status}${VENV_PROMPT_MODIFIER}${EMC}\w${RESET}${BRANCH} "
 }
 
 PROMPT_COMMAND=update_prompt
